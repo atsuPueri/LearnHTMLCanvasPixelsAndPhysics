@@ -27,7 +27,7 @@ window.addEventListener('load', function () {
          * プロパティから値を取得し、そのサイズの粒子を描画する
          */
         draw() {
-            ctx.fillRect(this.x, this.y, this.size, this.size)
+            ctx.fillRect(this.x, this.y, this.size, this.size);
         }
     }
 
@@ -35,11 +35,28 @@ window.addEventListener('load', function () {
      * エフェクト全体を処理する
      */
     class Effect {
-
+        constructor (width, height) {
+            this.width = width;
+            this.height = height;
+            // 現在有効な粒子が全て格納される
+            this.particlesArray = [];
+        }
+        // this.particlesArrayに効果を与えて塗りつぶす
+        init() {
+            this.particlesArray.push(new Particle());
+        }
+        /**
+         * this.particlesArrayを取得し、中のdrawを全て呼び出す。
+         */
+        draw() {
+            this.particlesArray.forEach(particle => particle.draw());
+        }
     }
 
-    const particle1 = new Particle()
-    particle1.draw()
+    const effect = new Effect(canvas.width, canvas.height);
+    effect.init();
+    effect.draw()
+    console.log(effect);
 
     // アニメーションループ
     function animate() {
