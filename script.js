@@ -3,7 +3,7 @@ window.addEventListener('load', function () {
 
     /** @type {HTMLCanvasElement} */
     const canvas = document.getElementById('canvas1');
-    // ショートカット
+    // コンテキスト
     const ctx = canvas.getContext('2d');
 
     // キャンバスがウィンドウ全体を覆うようにする
@@ -25,9 +25,10 @@ window.addEventListener('load', function () {
 
         /**
          * プロパティから値を取得し、そのサイズの粒子を描画する
+         * @param {CanvasRenderingContext2D} context
          */
-        draw() {
-            ctx.fillRect(this.x, this.y, this.size, this.size);
+        draw(context) {
+            context.fillRect(this.x, this.y, this.size, this.size);
         }
     }
 
@@ -47,15 +48,16 @@ window.addEventListener('load', function () {
         }
         /**
          * this.particlesArrayを取得し、中のdrawを全て呼び出す。
+         * @param {CanvasRenderingContext2D} context
          */
-        draw() {
-            this.particlesArray.forEach(particle => particle.draw());
+        draw(context) {
+            this.particlesArray.forEach(particle => particle.draw(context));
         }
     }
 
     const effect = new Effect(canvas.width, canvas.height);
     effect.init();
-    effect.draw()
+    effect.draw(ctx)
     console.log(effect);
 
     // アニメーションループ
