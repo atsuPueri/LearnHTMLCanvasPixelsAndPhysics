@@ -80,3 +80,8 @@ drawImage method
 how to center images on canvas
 キャンバスの中央に画像を配置する方法
 
+## Lesson13
+particle motion
+
+粒子にアニメーションを付けることができた。
+XY軸にランダムに動くようにできた

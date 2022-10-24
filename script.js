@@ -20,7 +20,9 @@ window.addEventListener('load', function () {
             this.effect = effect;
             this.x = Math.random() * this.effect.width; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
             this.y = Math.random() * this.effect.height;
-            this.size = 100;
+            this.size = 10;
+            this.vx = Math.random() * 2 - 1; // X軸速度
+            this.vy = Math.random() * 2 - 1; // Y軸速度
         }
 
         /**
@@ -29,6 +31,11 @@ window.addEventListener('load', function () {
          */
         draw(context) {
             context.fillRect(this.x, this.y, this.size, this.size);
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
         }
     }
 
@@ -56,7 +63,7 @@ window.addEventListener('load', function () {
         }
         // this.particlesArrayに粒子を与える
         init() {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 100; i++) {
                 this.particlesArray.push(new Particle(this));
             }
         }
@@ -68,17 +75,25 @@ window.addEventListener('load', function () {
             this.particlesArray.forEach(particle => particle.draw(context));
             context.drawImage(this.image, this.x, this.y);
         }
+
+        /**
+         * 現在有効な粒子全てのupdateを呼び出す
+         */
+        update() {
+            this.particlesArray.forEach(particle => particle.update())
+        }
     }
 
     const effect = new Effect(canvas.width, canvas.height);
     effect.init();
-    effect.draw(ctx)
-    console.log(effect);
 
     // アニメーションループ
     function animate() {
-
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // 実行時に中身をクリアする
+        effect.draw(ctx);
+        effect.update();
+        window.requestAnimationFrame(animate); // ここで繰り返しを起こしている
     }
-
+    animate()
 
 });
