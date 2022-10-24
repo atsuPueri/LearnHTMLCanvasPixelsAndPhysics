@@ -10,6 +10,9 @@ window.addEventListener('load', function () {
     canvas.width = window.innerWidth
     canvas.height = this.window.innerHeight
 
+    /** @type {HTMLImageElement} */
+    const image1 = document.getElementById('image1')
+
     /**
      * 粒子、１ピクセルを表す
      */
@@ -38,4 +41,8 @@ window.addEventListener('load', function () {
     // 塗りつぶし色はデフォルト黒
     // (x, y, width, height)
     ctx.fillRect(120, 150, 100, 200)
+
+    // 画像描画メソッド
+    // (描画したい画像, x, y, width, height) widthとheightは渡さなければ元の画像サイズで描画される
+    ctx.drawImage(image1, 100, 100, 100, 100)
 });
