@@ -18,12 +18,12 @@ window.addEventListener('load', function () {
     class Particle {
         constructor(effect, x, y, color) {
             this.effect = effect;
-            this.x = 1 * this.effect.width; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
-            this.y = 1 * this.effect.height;
+            this.x = x; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
+            this.y = y;
             this.originX = Math.floor(x);
             this.originY = Math.floor(y);
             this.color = color;
-            this.size = 10;
+            this.size = this.effect.gap;
             this.vx = 0; // X軸速度
             this.vy = 0; // Y軸速度
         }
@@ -33,6 +33,7 @@ window.addEventListener('load', function () {
          * @param {CanvasRenderingContext2D} context
          */
         draw(context) {
+            context.fillStyle = this.color
             context.fillRect(this.x, this.y, this.size, this.size);
         }
 
@@ -63,7 +64,7 @@ window.addEventListener('load', function () {
             this.x = this.centerX - (this.image.width * 0.5);
             this.y = this.centerY - (this.image.height * 0.5);
             
-            this.gap = 5 // 画質を荒くするのに使用、実際にはgapではない。
+            this.gap = 3 // 画質を荒くするのに使用、実際にはgapではない。
         }
         
         /**
@@ -82,7 +83,6 @@ window.addEventListener('load', function () {
                     const alpha = pixels[index + 3];
                     const color = `rgb(${red},${green},${blue})`;
 
-                    console.log(alpha);
                     // 透明じゃないとき
                     if (alpha > 0) {
                         this.particlesArray.push(new Particle(this, x, y, color))
@@ -112,7 +112,7 @@ window.addEventListener('load', function () {
     console.log(effect);
     // アニメーションループ
     function animate() {
-        // ctx.clearRect(0, 0, canvas.width, canvas.height); // 実行時に中身をクリアする
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // 実行時に中身をクリアする
         effect.draw(ctx);
         effect.update();
         window.requestAnimationFrame(animate); // ここで繰り返しを起こしている

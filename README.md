@@ -96,3 +96,6 @@ RGBAになっている
 ## Lesson15
 extracting coordinates and colors from raw pixel data
 生のピクセルデータから座標と色を抽出する
+
+## Lesson16
+Lesson15で取得したピクセルデータを実際にあてはめることで、画像をドット絵化することが出来た。
