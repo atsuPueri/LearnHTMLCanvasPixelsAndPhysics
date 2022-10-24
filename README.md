@@ -85,3 +85,10 @@ particle motion
 
 粒子にアニメーションを付けることができた。
 XY軸にランダムに動くようにできた
+
+## Lesson14
+pixel analysis with getlmageData
+getimageData によるピクセル分析
+
+context.getImageData() によって画像データの１ピクセル毎の情報を取得することができた
+RGBAになっている

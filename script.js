@@ -21,8 +21,8 @@ window.addEventListener('load', function () {
             this.x = Math.random() * this.effect.width; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
             this.y = Math.random() * this.effect.height;
             this.size = 10;
-            this.vx = Math.random() * 2 - 1; // X軸速度
-            this.vy = Math.random() * 2 - 1; // Y軸速度
+            this.vx = 0; // X軸速度
+            this.vy = 0; // Y軸速度
         }
 
         /**
@@ -61,11 +61,21 @@ window.addEventListener('load', function () {
             this.y = this.centerY - (this.image.height * 0.5);
                
         }
-        // this.particlesArrayに粒子を与える
-        init() {
-            for (let i = 0; i < 100; i++) {
-                this.particlesArray.push(new Particle(this));
-            }
+        
+        /**
+         * this.particlesArrayに粒子を与える
+         * @param {CanvasRenderingContext2D} context 
+         */
+        init(context) {
+            context.drawImage(this.image, this.x, this.y);
+            // 全ての位置、色を含んだ配列
+            // getImageData() キャンバスの特定の部分を分析し、その分析されたピクセルデータを特別な画像データオブジェクト形式で返します。
+            // (x, y, width, height)
+            // uint8 クランプ配列と呼ばれるものになっている
+            // 0 ~ 255 の範囲にクランプされた割り当てられない８ビット整数配列
+            // rgbaの色であらわされている
+            const pixels = context.getImageData(0, 0, this.width, this.height);
+            console.log(pixels);
         }
         /**
          * this.particlesArrayを取得し、中のdrawを全て呼び出す。
@@ -73,7 +83,6 @@ window.addEventListener('load', function () {
          */
         draw(context) {
             this.particlesArray.forEach(particle => particle.draw(context));
-            context.drawImage(this.image, this.x, this.y);
         }
 
         /**
@@ -85,11 +94,11 @@ window.addEventListener('load', function () {
     }
 
     const effect = new Effect(canvas.width, canvas.height);
-    effect.init();
+    effect.init(ctx);
 
     // アニメーションループ
     function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // 実行時に中身をクリアする
+        // ctx.clearRect(0, 0, canvas.width, canvas.height); // 実行時に中身をクリアする
         effect.draw(ctx);
         effect.update();
         window.requestAnimationFrame(animate); // ここで繰り返しを起こしている
