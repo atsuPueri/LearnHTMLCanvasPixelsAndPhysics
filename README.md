@@ -72,3 +72,7 @@ multiple randomized particles
 座標をハードコーディングするのではなく、粒子の位置をランダム化することができる。
 
 Particleの配置をランダム化した、その際にキャンバスの横縦幅が必要だったので、Particle自身を格納しているeffectクラスを参照するように変更した。
+
+## Lesson11
+drawImage method
+

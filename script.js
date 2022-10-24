@@ -10,8 +10,6 @@ window.addEventListener('load', function () {
     canvas.width = window.innerWidth
     canvas.height = this.window.innerHeight
 
-    /** @type {HTMLImageElement} */
-    const image1 = document.getElementById('image1')
 
     /**
      * 粒子、１ピクセルを表す
@@ -43,6 +41,10 @@ window.addEventListener('load', function () {
             this.height = height;
             // 現在有効な粒子が全て格納される
             this.particlesArray = [];
+
+            
+            /** @type {HTMLImageElement} */
+            this.image = document.getElementById('image1')
         }
         // this.particlesArrayに粒子を与える
         init() {
@@ -56,6 +58,7 @@ window.addEventListener('load', function () {
          */
         draw(context) {
             this.particlesArray.forEach(particle => particle.draw(context));
+            context.drawImage(this.image, 0, 0);
         }
     }
 
