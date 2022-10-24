@@ -76,3 +76,7 @@ Particleの配置をランダム化した、その際にキャンバスの横縦
 ## Lesson11
 drawImage method
 
+## Lesson12
+how to center images on canvas
+キャンバスの中央に画像を配置する方法
+

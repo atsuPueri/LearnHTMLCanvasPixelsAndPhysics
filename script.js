@@ -41,10 +41,18 @@ window.addEventListener('load', function () {
             this.height = height;
             // 現在有効な粒子が全て格納される
             this.particlesArray = [];
-
             
             /** @type {HTMLImageElement} */
-            this.image = document.getElementById('image1')
+            this.image = document.getElementById('image1');
+
+            // 画面の中心
+            this.centerX = this.width * 0.5;
+            this.centerY = this.height * 0.5;
+
+            // 画像の半分を引くことで、画像を中心に持ってくる
+            this.x = this.centerX - (this.image.width * 0.5);
+            this.y = this.centerY - (this.image.height * 0.5);
+               
         }
         // this.particlesArrayに粒子を与える
         init() {
@@ -58,7 +66,7 @@ window.addEventListener('load', function () {
          */
         draw(context) {
             this.particlesArray.forEach(particle => particle.draw(context));
-            context.drawImage(this.image, 0, 0);
+            context.drawImage(this.image, this.x, this.y);
         }
     }
 
