@@ -92,3 +92,7 @@ getimageData によるピクセル分析
 
 context.getImageData() によって画像データの１ピクセル毎の情報を取得することができた
 RGBAになっている
+
+## Lesson15
+extracting coordinates and colors from raw pixel data
+生のピクセルデータから座標と色を抽出する

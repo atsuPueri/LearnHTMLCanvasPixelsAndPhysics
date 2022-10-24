@@ -16,10 +16,13 @@ window.addEventListener('load', function () {
      * @param {Effect} effect エフェクト全体
      */
     class Particle {
-        constructor(effect) {
+        constructor(effect, x, y, color) {
             this.effect = effect;
-            this.x = Math.random() * this.effect.width; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
-            this.y = Math.random() * this.effect.height;
+            this.x = 1 * this.effect.width; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
+            this.y = 1 * this.effect.height;
+            this.originX = Math.floor(x);
+            this.originY = Math.floor(y);
+            this.color = color;
             this.size = 10;
             this.vx = 0; // X軸速度
             this.vy = 0; // Y軸速度
@@ -59,7 +62,8 @@ window.addEventListener('load', function () {
             // 画像の半分を引くことで、画像を中心に持ってくる
             this.x = this.centerX - (this.image.width * 0.5);
             this.y = this.centerY - (this.image.height * 0.5);
-               
+            
+            this.gap = 5 // 画質を荒くするのに使用、実際にはgapではない。
         }
         
         /**
@@ -68,14 +72,24 @@ window.addEventListener('load', function () {
          */
         init(context) {
             context.drawImage(this.image, this.x, this.y);
-            // 全ての位置、色を含んだ配列
-            // getImageData() キャンバスの特定の部分を分析し、その分析されたピクセルデータを特別な画像データオブジェクト形式で返します。
-            // (x, y, width, height)
-            // uint8 クランプ配列と呼ばれるものになっている
-            // 0 ~ 255 の範囲にクランプされた割り当てられない８ビット整数配列
-            // rgbaの色であらわされている
-            const pixels = context.getImageData(0, 0, this.width, this.height);
-            console.log(pixels);
+            const pixels = context.getImageData(0, 0, this.width, this.height).data;
+            for (let y = 0; y < this.height; y+= this.gap) {
+                for (let x = 0; x < this.width; x += this.gap) {
+                    const index = (y * this.width + x) * 4 // 4つ毎にあらわされているので４
+                    const red = pixels[index];
+                    const green = pixels[index + 1];
+                    const blue = pixels[index + 2];
+                    const alpha = pixels[index + 3];
+                    const color = `rgb(${red},${green},${blue})`;
+
+                    console.log(alpha);
+                    // 透明じゃないとき
+                    if (alpha > 0) {
+                        this.particlesArray.push(new Particle(this, x, y, color))
+                    }
+                    
+                }
+            }
         }
         /**
          * this.particlesArrayを取得し、中のdrawを全て呼び出す。
@@ -95,7 +109,7 @@ window.addEventListener('load', function () {
 
     const effect = new Effect(canvas.width, canvas.height);
     effect.init(ctx);
-
+    console.log(effect);
     // アニメーションループ
     function animate() {
         // ctx.clearRect(0, 0, canvas.width, canvas.height); // 実行時に中身をクリアする
