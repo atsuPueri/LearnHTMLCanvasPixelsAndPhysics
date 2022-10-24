@@ -18,9 +18,16 @@ window.addEventListener('load', function () {
      */
     class Particle {
         constructor() {
-            this.x = 0
-            this.y = 0
-            this.size = 3 // ピクセルサイズを３倍にしている
+            this.x = 20;
+            this.y = 50;
+            this.size = 100;
+        }
+
+        /**
+         * プロパティから値を取得し、そのサイズの粒子を描画する
+         */
+        draw() {
+            ctx.fillRect(this.x, this.y, this.size, this.size)
         }
     }
 
@@ -31,18 +38,13 @@ window.addEventListener('load', function () {
 
     }
 
+    const particle1 = new Particle()
+    particle1.draw()
+
     // アニメーションループ
     function animate() {
 
     }
 
-    // 四角く塗りつぶすメソッド
-    // 塗りつぶしスタイルを指定しない場合、その長方形を色で塗りつぶす。
-    // 塗りつぶし色はデフォルト黒
-    // (x, y, width, height)
-    ctx.fillRect(120, 150, 100, 200)
 
-    // 画像描画メソッド
-    // (描画したい画像, x, y, width, height) widthとheightは渡さなければ元の画像サイズで描画される
-    ctx.drawImage(image1, 100, 100, 100, 100)
 });
