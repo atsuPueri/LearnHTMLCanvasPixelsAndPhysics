@@ -18,14 +18,16 @@ window.addEventListener('load', function () {
     class Particle {
         constructor(effect, x, y, color) {
             this.effect = effect;
-            this.x = x; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
-            this.y = y;
+            this.x = Math.random() * this.effect.width; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
+            this.y = Math.random() * this.effect.height;
             this.originX = Math.floor(x);
             this.originY = Math.floor(y);
             this.color = color;
             this.size = this.effect.gap;
             this.vx = 0; // X軸速度
             this.vy = 0; // Y軸速度
+
+            this.ease = 0.2 // 元の画像に戻る速度
         }
 
         /**
@@ -38,8 +40,8 @@ window.addEventListener('load', function () {
         }
 
         update() {
-            this.x += this.vx;
-            this.y += this.vy;
+            this.x += (this.originX - this.x) * this.ease;
+            this.y += (this.originY - this.y) * this.ease;
         }
     }
 

@@ -99,3 +99,8 @@ extracting coordinates and colors from raw pixel data
 
 ## Lesson16
 Lesson15で取得したピクセルデータを実際にあてはめることで、画像をドット絵化することが出来た。
+
+## Lesson17
+animated particle transitions
+
+画像が元の状態に戻ろうとする処理を実装しました、これは、easeや初期位置XYをいじると面白くなります。
