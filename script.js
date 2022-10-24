@@ -15,11 +15,13 @@ window.addEventListener('load', function () {
 
     /**
      * 粒子、１ピクセルを表す
+     * @param {Effect} effect エフェクト全体
      */
     class Particle {
-        constructor() {
-            this.x = 20;
-            this.y = 50;
+        constructor(effect) {
+            this.effect = effect;
+            this.x = Math.random() * this.effect.width; // 0 ~ 1の少数点 * 横幅とすることで最大でもキャンバスの端となる。
+            this.y = Math.random() * this.effect.height;
             this.size = 100;
         }
 
@@ -42,9 +44,11 @@ window.addEventListener('load', function () {
             // 現在有効な粒子が全て格納される
             this.particlesArray = [];
         }
-        // this.particlesArrayに効果を与えて塗りつぶす
+        // this.particlesArrayに粒子を与える
         init() {
-            this.particlesArray.push(new Particle());
+            for (let i = 0; i < 10; i++) {
+                this.particlesArray.push(new Particle(this));
+            }
         }
         /**
          * this.particlesArrayを取得し、中のdrawを全て呼び出す。
