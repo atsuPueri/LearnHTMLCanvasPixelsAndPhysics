@@ -32,4 +32,10 @@ window.addEventListener('load', function () {
     function animate() {
 
     }
+
+    // 四角く塗りつぶすメソッド
+    // 塗りつぶしスタイルを指定しない場合、その長方形を色で塗りつぶす。
+    // 塗りつぶし色はデフォルト黒
+    // (x, y, width, height)
+    ctx.fillRect(120, 150, 100, 200)
 });
