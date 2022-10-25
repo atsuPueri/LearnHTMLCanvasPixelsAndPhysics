@@ -12,3 +12,21 @@
 img {
     display: none;
 }
+
+button {
+    padding: 20px;
+    font-size: 30px;
+    margin: 20px;
+    color: white;
+    background-color: black;
+    /* 切り替わりに0.2s */
+    transition: 0.2s;
+
+    /* グーグルフォント */
+    font-family: 'Bangers', cursive;
+}
+
+button:hover {
+    color: black;
+    background-color: white;
+}
