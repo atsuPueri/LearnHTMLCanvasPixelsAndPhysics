@@ -26,8 +26,13 @@ window.addEventListener('load', function () {
             this.size = this.effect.gap;
             this.vx = 0; // X軸速度
             this.vy = 0; // Y軸速度
-
-            this.ease = 0.01 // 元の画像に戻る速度
+            this.ease = 0.01; // 元の画像に戻る速度
+            this.friction = 0.95; // 摩擦度 ゆっくりと遅くなる速度
+            this.dx = 0; // マウスとの距離（X）
+            this.dy = 0; // マウスとの距離（Y)
+            this.distance = 0; // マウスとの距離 （実際の距離）
+            this.force = 0; // マウスによって押し出される速度
+            this.angle = 0; // マウスによって押し出される方向
         }
 
         /**
@@ -38,10 +43,33 @@ window.addEventListener('load', function () {
             context.fillStyle = this.color
             context.fillRect(this.x, this.y, this.size, this.size);
         }
-
         update() {
-            this.x += (this.originX - this.x) * this.ease;
-            this.y += (this.originY - this.y) * this.ease;
+            // マウスと粒子との距離
+            this.dx = this.effect.mouse.x - this.x;
+            this.dy = this.effect.mouse.y - this.y;
+
+            // 斜めの距離は、ピタゴラスの定理？三角関数で求めることができる。
+            // C^2 = A^2 + B^2  === C = √ A^2 + B^2
+            this.distance = this.dx ** 2 + this.dy ** 2;
+
+            // マウスが反応する範囲（半径） / 実際の距離
+            // マウスから遠ざけるためにマイナスにする
+            // 押し出される強さは、半径とマウスの距離に比例する
+            this.force = -this.effect.mouse.radius / this.distance;
+
+            // マウスの半径より小さければ、マウスから粒子を遠ざける
+            if (this.distance < this.effect.mouse.radius) {
+                // このatan2()を使用すると角度を計算できる
+                // 指定されたXY点によってシータθ角度を表している
+                this.angle = Math.atan2(this.dy, this.dx);
+
+                // XY軸がどちらに押されるかを計算
+                this.vx += this.force * Math.cos(this.angle);
+                this.vy += this.force * Math.sin(this.angle);
+            }
+
+            this.x += (this.vx *= this.friction) + (this.originX - this.x) * this.ease;
+            this.y += (this.vy *= this.friction) + (this.originY - this.y) * this.ease;
         }
         warp() {
             this.x = Math.random() * this.effect.width;
@@ -71,7 +99,22 @@ window.addEventListener('load', function () {
             this.x = this.centerX - (this.image.width * 0.5);
             this.y = this.centerY - (this.image.height * 0.5);
             
-            this.gap = 3 // 画質を荒くするのに使用、実際にはgapではない。
+            this.gap = 3; // 画質を荒くするのに使用、実際にはgapではない。
+            this.mouse = {
+                // 粒子がマウスに反応するカーソル周囲の領域
+                // 実際には3000ピクセルもの範囲に反応するわけではない。
+                // 数値が高い理由は、パフォーマンス上の理由がある。
+                // マウスカーソルのXYははじめは定義されていない
+                radius: 3000,
+                x: undefined,
+                y: undefined,
+            };
+            // ここに配置している理由は、マウス移動に際して、XやYをオーバーライドできるようにするため
+            window.addEventListener('mousemove', event => {
+                this.mouse.x = event.x;
+                this.mouse.y = event.y;
+                console.log(this.mouse.x);
+            });
         }
         
         /**
