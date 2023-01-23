@@ -1,5 +1,92 @@
-## test
-テスト
+<?php
+
+if (isset($_POST['data'])) {
+    $data = $_POST['data'];
+    dataURL_decode('./test.png', $data);
+    echo $data;
+    exit;
+}
+
+function dataURL_decode(string $file_path_name, string $dataURL): void
+{
+    // dataURLか確認 // 確認機能未実装
+
+    // base64の値を取得
+    $base64 = explode(";base64,", $dataURL)[1];
+    // base64をエンコード
+    $decode = base64_decode($base64);
+
+    // 書き出し
+    file_put_contents($file_path_name, $decode);
+}
+
+?>
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <video id="camera" playsinline></video>
+    <button id="shutter">撮影</button>
+
+    <script>
+        const video = document.getElementById('camera');
+        navigator.mediaDevices
+            .getUserMedia({
+                audio: false,
+                video: {
+                    // facingMode: {
+                    //     exact: 'environment',
+                    // },
+                    facingMode: 'user'
+                },
+            })
+            .then(stream => {
+                video.srcObject = stream
+                video.onloadedmetadata = () => {
+                    console.log("A");
+                    video.play()
+                }
+            })
+            .catch(() => {
+                alert("Error");
+            })
+
+        document.getElementById('shutter').addEventListener('click', e => {
+
+            /**
+             * @type {HTMLCanvasElement}
+             */
+            const myCanvas = document.createElement('canvas');
+            const context = myCanvas.getContext('2d');
+            myCanvas.width  = video.videoWidth;
+            myCanvas.height = video.videoHeight;
+
+            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+            video.pause();
+            sendCanvas();
 
 
-あつ
+            function sendCanvas() {
+                const sendData = new FormData();
+                sendData.append('data', myCanvas.toDataURL());
+                fetch(window.location.href, {
+                        method: "POST",
+                        body: sendData
+                    })
+                    .then(response => response.text())
+                    .then(msg => {
+                    });
+            }
+        });
+    </script>
+</body>
+
+</html>
