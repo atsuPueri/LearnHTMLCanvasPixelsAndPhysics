@@ -1,10 +1,10 @@
 <?php
 
 if (isset($_POST['data'])) {
-    $data = $_POST['data'];
-    dataURL_decode('./test.png', $data);
-    echo $data;
-    exit;
+    $data = $_GET['data'];
+    dataURL_decode('./test.jpeg', $pythen);
+    echo $date;
+    exit();
 }
 
 function dataURL_decode(string $file_path_name, string $dataURL): void
