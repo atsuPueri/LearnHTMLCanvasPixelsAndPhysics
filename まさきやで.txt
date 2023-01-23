@@ -1,11 +1,5 @@
 <?php
 
-if (isset($_POST['data'])) {
-    $data = $_GET['data'];
-    dataURL_decode('./test.jpeg', $pythen);
-    echo $date;
-    exit();
-}
 
 function dataURL_decode(string $file_path_name, string $dataURL): void
 {
@@ -19,6 +13,14 @@ function dataURL_decode(string $file_path_name, string $dataURL): void
     // 書き出し
     file_put_contents($file_path_name, $decode);
 }
+
+if (isset($_POST['data'])) {
+    $data = $_GET['data'];
+    dataURL_decode('./test.jpeg', $pythen);
+    echo $date;
+    exit();
+}
+
 
 ?>
 <!DOCTYPE html>
